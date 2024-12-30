@@ -5,8 +5,8 @@ pipeline {
     }
  
     environment {
-        NODEJS_HOME = 'C:\Program Files\nodejs'
-        SONAR_SCANNER_PATH = 'C:\Users\senth\Downloads\sonar-scanner-cli-6.2.1.4610-windows-x64\sonar-scanner-6.2.1.4610-windows-x64\bin'
+        NODEJS_HOME = 'C:\\Program Files\\nodejs' // Escaped backslashes
+        SONAR_SCANNER_PATH = 'C:\\Users\\senth\\Downloads\\sonar-scanner-cli-6.2.1.4610-windows-x64\\sonar-scanner-6.2.1.4610-windows-x64\\bin'
     }
  
     stages {
@@ -18,7 +18,6 @@ pipeline {
  
         stage('Install Dependencies') {
             steps {
-                // Set the PATH and install dependencies using npm
                 bat '''
                 set PATH=%NODEJS_HOME%;%PATH%
                 npm install
@@ -28,7 +27,6 @@ pipeline {
  
         stage('Lint') {
             steps {
-                // Run linting to ensure code quality
                 bat '''
                 set PATH=%NODEJS_HOME%;%PATH%
                 npm run lint
@@ -38,7 +36,6 @@ pipeline {
  
         stage('Build') {
             steps {
-                // Build the React app
                 bat '''
                 set PATH=%NODEJS_HOME%;%PATH%
                 npm run build
@@ -51,16 +48,14 @@ pipeline {
                 SONAR_TOKEN = credentials('sonar-token') // Accessing the SonarQube token stored in Jenkins credentials
             }
             steps {
-                // Ensure that sonar-scanner is in the PATH
                 bat '''
                 set PATH=%SONAR_SCANNER_PATH%;%PATH%
                 where sonar-scanner || echo "SonarQube scanner not found. Please install it."
-               sonar-scanner ^
+                sonar-scanner ^
                               -Dsonar.projectKey=register ^
                               -Dsonar.sources=. ^
-                              -Dsonar.host.url=%SONAR_HOST_URL% ^
+                              -Dsonar.host.url=http://localhost:9000 ^
                               -Dsonar.token=%SONAR_TOKEN%
-
                 '''
             }
         }
