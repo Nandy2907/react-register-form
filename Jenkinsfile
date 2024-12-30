@@ -52,9 +52,9 @@ pipeline {
                 set PATH=%SONAR_SCANNER_PATH%;%PATH%
                 where sonar-scanner || echo "SonarQube scanner not found. Please install it."
                 sonar-scanner ^
-                              -Dsonar.projectKey=register ^
-                              -Dsonar.sources=. ^
-                              -Dsonar.host.url=http://localhost:9000 ^
+                              -Dsonar.projectKey=register ^  // Replace with your actual project key
+                              -Dsonar.sources=. ^  // Analyze all files in the root of the repository
+                              -Dsonar.host.url=http://localhost:9000 ^  // Replace with your SonarQube instance URL
                               -Dsonar.token=%SONAR_TOKEN%
                 '''
             }
